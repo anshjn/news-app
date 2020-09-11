@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const getNews = require('./routes/getnews');
 const app = express();
 
 const port = process.env.Port || 3000; 
@@ -13,6 +14,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/newsfeedly', { useNewUrlParser: true
         console.log(err);
     })
 
+app.use(getNews);
 app.get('/', (req, res) => {
     res.send('hello');
 });
