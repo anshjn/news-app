@@ -45,7 +45,7 @@ router.get('/news/', (req, res) => {
     sortBy: 'relevancy',
     page: 2
   }
-  newsapi.v2.everything().then(response => {
+  newsapi.v2.everything(data).then(response => {
     
     res.status(200).json(response);
   });
