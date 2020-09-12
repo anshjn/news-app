@@ -1,11 +1,18 @@
 <div class="container">
   <div class="header">
     <div class="title">Newsfeedly</div>
+    <div class="searchbox"><input type="text" placeholder="Search" [(ngModel)]="searchTerm"></div>
+    <div class="lets_search"><button (click)='letsSearch()'>Search</button></div>
   </div>
   <div class="data_container">
     <div class="content"></div>
     <div class="aside">
-      
+      <div class="checkboxes">
+        <div class="check" *ngFor="let item of checkboxes; let i = index">
+          <input type="checkbox" [value] = "item.name" (change) = "valueTrue('check' + i,item.name)" name="item.name"  [id]="'check' + i">
+          <label for="">{{item.name}}</label>
+        </div>
+      </div>
     </div>
   </div>
 </div>

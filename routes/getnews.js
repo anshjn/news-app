@@ -7,13 +7,25 @@ const newsapi = new NewsAPI('6ff0398454074a969183758dbd1b62cc');
 
 router.get('/top-stories', (req, res) => {
     let data;
-    let param = {
-      sources: 'bbc-news,the-verge',
-      // q: 'bitcoin',
-      category: 'business',
-      language: 'en',
-      country: 'us'
+    let param
+    if(req.query !== {}) {
+      param = {
+        sources: req.query.channels,
+        // q: 'bitcoin',
+        category: 'business',
+        language: 'en',
+        country: 'us'
+      }
+    } else {
+      param = {
+        sources: req.query.channels,
+        // q: 'bitcoin',
+        category: 'business',
+        language: 'en',
+        country: 'us'
+      }
     }
+  
     newsapi.v2.topHeadlines(param).then(response => {
         console.log(response);
         data = response;
