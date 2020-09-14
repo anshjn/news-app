@@ -6,7 +6,7 @@ const cors = require('cors');
 
 const app = express();
 
-const port = process.env.Port || 3000; 
+const port = process.env.Port || 4000; 
 
 mongoose.connect('mongodb://127.0.0.1:27017/newsfeedly', { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
