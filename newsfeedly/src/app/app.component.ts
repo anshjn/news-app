@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+
 
 @Component({
   selector: 'app-root',
@@ -17,9 +19,9 @@ export class AppComponent {
     {name: 'Buzzfeed'},
     {name: 'CNN'},
   ]
-
+  baseUrl = 'http://localhost:3000/'
   channels = [];
-
+  constructor(private http: HttpClient) {}
   valueTrue(id, val) {
     console.log(id, val);
     let event = document.getElementById(id);
@@ -35,5 +37,11 @@ export class AppComponent {
 
   letsSearch() {
     console.log(this.searchTerm);
+    if(this.channels.length > 0) {
+      this.http.get(this.baseUrl + 'news?term=' + this.searchTerm).subscribe(data => {
+        console.log(data);
+      })
+    }
+
   }
 }

@@ -58,7 +58,7 @@ router.get('/news/', (req, res) => {
     page: 2
   }
   newsapi.v2.everything(data).then(response => {
-    
+    console.log(response);
     res.status(200).json(response);
   });
 });
