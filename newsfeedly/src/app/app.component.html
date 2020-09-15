@@ -2,17 +2,30 @@
   <div class="header">
     <div class="title">Newsfeedly</div>
     <div class="searchbox"><input type="text" placeholder="Search" [(ngModel)]="searchTerm"></div>
-    <div class="lets_search"><button (click)='letsSearch()'>Search</button></div>
+    <div class="lets_search"><button [disabled] = "searchTerm.length === 0" (click)='searchByTerm()'>Search</button></div>
+    <div><button [disabled] = "searchTerm.length === 0" (click)='getTopStories()'>Get Top Stories</button></div>
   </div>
   <div class="data_container">
     <div class="content"></div>
     <div class="aside">
       <div class="checkboxes">
         <div class="check" *ngFor="let item of checkboxes; let i = index">
-          <input type="checkbox" [value] = "item.name" (change) = "valueTrue('check' + i,item.name)" name="item.name"  [id]="'check' + i">
+          <input type="checkbox" [value] = "item.value" (change) = "valueTrue('check' + i,item.value)" name="item.name"  [id]="'check' + i">
           <label for="">{{item.name}}</label>
         </div>
       </div>
+    </div>
+    <div class="lets_search"><button (click)='letsSearch()'>Filter By Channels</button></div>
+  </div>
+
+  <div class="data" *ngIf="response.length > 0">
+    <div class="news" *ngFor="let item of response">
+      <div class = 'img'><img [src]="item.urlToImage" alt=""></div>
+      <div class="title">{{item.title}}</div>
+      <h4 *ngIf="item.content">Content</h4>
+      <div class="content" *ngIf="item.content">{{item.content}}</div>
+      <h4 *ngIf="item.description">Description</h4>
+      <div class="description" *ngIf="item.description">{{item.description}}</div>
     </div>
   </div>
 </div>

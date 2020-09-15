@@ -10,18 +10,31 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'newsfeedly';
   searchTerm = '';
+  response = [];
   checkboxes = [
-    {name: 'ABC News'},
-    {name: 'BBC News'},
-    {name: 'BBC Sport'},
-    {name: 'ESPN'},
-    {name: 'Business Insider'},
-    {name: 'Buzzfeed'},
-    {name: 'CNN'},
+    {name: 'ABC News', value: 'abc-news'},
+    {name: 'BBC News', value: 'bbc-news'},
+    {name: 'BBC Sport', value: 'bbc-sport'},
+    {name: 'ESPN', value: 'espn'},
+    {name: 'Business Insider', value: 'business-insider'},
+    {name: 'Buzzfeed', value: 'buzzfeed'},
+    {name: 'CNN', value: 'cnn'},
   ]
-  baseUrl = 'http://localhost:3000/'
+  baseUrl = 'http://localhost:4000/'
   channels = [];
-  constructor(private http: HttpClient) {}
+  allChannels = "abc-news,bbc-news,bbc-sport,espn,business-insider,buzzfeed,cnn";
+  constructor(private http: HttpClient) {
+
+  }
+
+  getTopStories() {
+    this.response = [];
+    this.http.get(this.baseUrl + 'top-stories?term=' + this.searchTerm + '&channels=' + ((this.channels.length > 0)? this.channels.join(',') : this.allChannels)).subscribe(data => {
+      JSON.parse(JSON.stringify(data));
+      console.log(data['articles']);
+      this.response = data['articles'].length? data['articles'] : '';
+    });
+  }
   valueTrue(id, val) {
     console.log(id, val);
     let event = document.getElementById(id);
@@ -37,11 +50,16 @@ export class AppComponent {
 
   letsSearch() {
     console.log(this.searchTerm);
-    if(this.channels.length > 0) {
-      this.http.get(this.baseUrl + 'news?term=' + this.searchTerm).subscribe(data => {
-        console.log(data);
-      })
-    }
+    if(this.searchTerm.length > 0) this.searchByTerm();
+    else this.getTopStories();
+  }
 
+  searchByTerm() {
+    this.http.get(this.baseUrl + 'news?term=' + this.searchTerm + '&channels=' + ((this.channels.length > 0)? this.channels.join(',') : this.allChannels)).subscribe(data => {
+      this.response = [];
+      JSON.parse(JSON.stringify(data));
+      console.log(data['articles']);
+      this.response = data['articles'].length? data['articles'] : '';
+    });
   }
 }

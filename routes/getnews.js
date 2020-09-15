@@ -6,31 +6,39 @@ const newsapi = new NewsAPI('6ff0398454074a969183758dbd1b62cc');
 
 
 router.get('/top-stories', (req, res) => {
+  
     let data;
-    let param
+    let param;
     if(req.query !== {}) {
       param = {
         sources: req.query.channels,
-        // q: 'bitcoin',
-        category: 'business',
-        language: 'en',
-        country: 'us'
+        q: req.query.term,
+        // category: 'business',
+        // language: 'en',
+        // country: 'us'
       }
     } else {
       param = {
         sources: req.query.channels,
-        // q: 'bitcoin',
-        category: 'business',
-        language: 'en',
-        country: 'us'
+        
+        // language: 'en',
+        // country: 'us'
       }
     }
   
     newsapi.v2.topHeadlines(param).then(response => {
-        console.log(response);
-        data = response;
-        res.status(200).json(response);
+      allData = response;
+      let news = new topStories({
+        article : allData.articles
       });
+      console.log(news);
+      news.save((err, data) => {
+        if(!err) {
+          console.log('might be saved');
+        }
+      })
+      res.status(200).json(response);
+    }).catch(err => console.log(err));
 });
 
 // router.get('/news/', (req, res) => {
@@ -46,10 +54,11 @@ router.get('/top-stories', (req, res) => {
 
 router.get('/news/', (req, res) => {
   let param = req.query;
+  let allData;
   console.log(param);
   let data = {
     q: param.term,
-    sources: 'bbc-news,the-verge',
+    sources: param.channels,
     domains: 'bbc.co.uk,techcrunch.com',
     // from: '2017-12-01',
     // to: '2017-12-12',
@@ -58,9 +67,18 @@ router.get('/news/', (req, res) => {
     page: 2
   }
   newsapi.v2.everything(data).then(response => {
-    console.log(response);
+    allData = response;
+    let news = new topStories({
+      article : allData.articles
+    });
+    console.log(news);
+    news.save((err, data) => {
+      if(!err) {
+        console.log('might be saved');
+      }
+    })
     res.status(200).json(response);
-  });
+  }).catch(err => console.log(err));
 });
 
 module.exports = router;
