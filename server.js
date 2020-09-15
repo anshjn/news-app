@@ -18,10 +18,11 @@ mongoose.connect('mongodb://127.0.0.1:27017/newsfeedly', { useNewUrlParser: true
 app.use(cors());
 // console.log('__dirname:', __dirname);
 app.use('/public',express.static(__dirname + '/public'));
+app.use('/newsfeedly',express.static(__dirname + '/newsfeedly'));
 app.use(getNews);
 
 app.get('/', (req, res) => {
-    res.send('hello');
+    res.sendFile(__dirname + '/newsfeedly/dist/newsfeedly/index.html');
 });
 
 app.listen(port, () => {
