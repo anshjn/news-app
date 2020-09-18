@@ -22,7 +22,7 @@ app.use('/newsfeedly',express.static(__dirname + '/newsfeedly'));
 app.use(getNews);
 
 app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/newsfeedly/dist/newsfeedly/index.html');
+    res.sendFile(__dirname + '/public/dist/newsfeedly/index.html');
 });
 
 app.listen(port, () => {
